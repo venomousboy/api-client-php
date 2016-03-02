@@ -720,6 +720,61 @@ class ApiClient
         return $this->client->makeRequest('/statistic/update', Client::METHOD_GET);
     }
 
+    // CRM Delivery Api methods
+
+    /**
+     * Create/edit configuration for delivery service integration
+     *
+     * @param  array $configuration configuration
+     * @return ApiResponse
+     */
+    public function deliverySettingEdit(array $configuration)
+    {
+        if (!isset($configuration['code'])) {
+            throw new \InvalidArgumentException('Data must contain "code" parameter.');
+        }
+
+        return $this->client->makeRequest(
+            '/delivery/generic/setting/' . $configuration['code'] . '/edit',
+            Client::METHOD_POST,
+            array(
+                'configuration' => json_encode($configuration)
+            )
+        );
+    }
+
+    /**
+     * Get configuration for delivery service integration
+     *
+     * @param  string $code integration code
+     * @return ApiResponse
+     */
+    public function deliverySettingGet($code)
+    {
+        return $this->client->makeRequest(
+            '/delivery/generic/setting/' . $code,
+            Client::METHOD_GET
+        );
+    }
+
+    /**
+     * Send tracking information
+     *
+     * @param  string $code integration code
+     * @param  array  $trackingData
+     * @return ApiResponse
+     */
+    public function deliveryTracking($code, array $trackingData)
+    {
+        return $this->client->makeRequest(
+            '/delivery/generic/' . $code . '/tracking',
+            Client::METHOD_POST,
+            array(
+                'statusUpdate' => json_encode($trackingData)
+            )
+        );
+    }
+
     /**
      * Return current site
      *
