@@ -4,6 +4,7 @@
     "type": "library",
     "keywords": ["API", "retailCRM", "REST"],
     "homepage": "http://www.retailcrm.pro/",
+    "version": "5.0.0",
     "license": "MIT",
     "authors": [
         {
