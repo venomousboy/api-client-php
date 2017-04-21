@@ -31,7 +31,7 @@ use RetailCrm\Response\ApiResponse;
 class ApiClient
 {
 
-    const VERSION = 'v4';
+    const VERSION = 'v5';
 
     protected $client;
 
@@ -169,6 +169,74 @@ class ApiClient
 
         return $this->client->makeRequest(
             '/orders',
+            Client::METHOD_GET,
+            $parameters
+        );
+    }
+
+    /**
+     * Returns filtered custom-fields list
+     *
+     * @param array $filter (default: array())
+     * @param int   $page   (default: null)
+     * @param int   $limit  (default: null)
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RetailCrm\Exception\CurlException
+     * @throws \RetailCrm\Exception\InvalidJsonException
+     *
+     * @return ApiResponse
+     */
+    public function customFieldsList(array $filter = array(), $page = null, $limit = null)
+    {
+        $parameters = array();
+
+        if (count($filter)) {
+            $parameters['filter'] = $filter;
+        }
+        if (null !== $page) {
+            $parameters['page'] = (int) $page;
+        }
+        if (null !== $limit) {
+            $parameters['limit'] = (int) $limit;
+        }
+
+        return $this->client->makeRequest(
+            '/custom-fields',
+            Client::METHOD_GET,
+            $parameters
+        );
+    }
+
+    /**
+     * Returns filtered custom-fields/dictionaries list
+     *
+     * @param array $filter (default: array())
+     * @param int   $page   (default: null)
+     * @param int   $limit  (default: null)
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RetailCrm\Exception\CurlException
+     * @throws \RetailCrm\Exception\InvalidJsonException
+     *
+     * @return ApiResponse
+     */
+    public function customDictionariesList(array $filter = array(), $page = null, $limit = null)
+    {
+        $parameters = array();
+
+        if (count($filter)) {
+            $parameters['filter'] = $filter;
+        }
+        if (null !== $page) {
+            $parameters['page'] = (int) $page;
+        }
+        if (null !== $limit) {
+            $parameters['limit'] = (int) $limit;
+        }
+
+        return $this->client->makeRequest(
+            '/custom-fields/dictionaries',
             Client::METHOD_GET,
             $parameters
         );
