@@ -175,7 +175,7 @@ class ApiClient
     }
 
     /**
-     * Returns filtered customFields list
+     * Returns filtered custom-fields list
      *
      * @param array $filter (default: array())
      * @param int   $page   (default: null)
@@ -202,14 +202,14 @@ class ApiClient
         }
 
         return $this->client->makeRequest(
-            '/customFields',
+            '/custom-fields',
             Client::METHOD_GET,
             $parameters
         );
     }
 
     /**
-     * Returns filtered customFields/customDictionary list
+     * Returns filtered custom-fields/dictionaries list
      *
      * @param array $filter (default: array())
      * @param int   $page   (default: null)
@@ -236,7 +236,7 @@ class ApiClient
         }
 
         return $this->client->makeRequest(
-            '/customFields/customDictionary',
+            '/custom-fields/dictionaries',
             Client::METHOD_GET,
             $parameters
         );
