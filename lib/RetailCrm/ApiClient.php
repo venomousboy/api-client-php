@@ -141,41 +141,7 @@ class ApiClient
     }
 
     /**
-     * Returns filtered orders list
-     *
-     * @param array $filter (default: array())
-     * @param int   $page   (default: null)
-     * @param int   $limit  (default: null)
-     *
-     * @throws \InvalidArgumentException
-     * @throws \RetailCrm\Exception\CurlException
-     * @throws \RetailCrm\Exception\InvalidJsonException
-     *
-     * @return ApiResponse
-     */
-    public function ordersList(array $filter = array(), $page = null, $limit = null)
-    {
-        $parameters = array();
-
-        if (count($filter)) {
-            $parameters['filter'] = $filter;
-        }
-        if (null !== $page) {
-            $parameters['page'] = (int) $page;
-        }
-        if (null !== $limit) {
-            $parameters['limit'] = (int) $limit;
-        }
-
-        return $this->client->makeRequest(
-            '/orders',
-            Client::METHOD_GET,
-            $parameters
-        );
-    }
-
-    /**
-     * Returns filtered custom-fields list
+     * Returns filtered customFields list
      *
      * @param array $filter (default: array())
      * @param int   $page   (default: null)
@@ -209,6 +175,83 @@ class ApiClient
     }
 
     /**
+     * Create a customField
+     *
+     * @param array  $customField customField data
+     * @param string $site  (default: null)
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RetailCrm\Exception\CurlException
+     * @throws \RetailCrm\Exception\InvalidJsonException
+     *
+     * @return ApiResponse
+     */
+    public function customFieldsCreate(array $customField, $site = null)
+    {
+        if (!count($customField)) {
+            throw new \InvalidArgumentException(
+                'Parameter `customField` must contains a data'
+            );
+        }
+
+        return $this->client->makeRequest(
+            '/custom-fields/create',
+            Client::METHOD_POST,
+            $this->fillSite($site, array('customField' => json_encode($customField)))
+        );
+    }
+
+    /**
+     * Get customField assembly by id
+     *
+     * @param string $id customField identificator
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RetailCrm\Exception\CurlException
+     * @throws \RetailCrm\Exception\InvalidJsonException
+     *
+     * @return ApiResponse
+     */
+    public function customFieldsGet($id)
+    {
+        if (empty($id)) {
+            throw new \InvalidArgumentException('Parameter `id` must be set');
+        }
+
+        return $this->client->makeRequest(
+            "/custom-fields/$id",
+            Client::METHOD_GET
+        );
+    }
+
+    /**
+     * Edit customField assembly
+     *
+     * @param array  $customField customField data
+     * @param string $site (default: null)
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RetailCrm\Exception\CurlException
+     * @throws \RetailCrm\Exception\InvalidJsonException
+     *
+     * @return ApiResponse
+     */
+    public function customFieldsEdit(array $customField, $site = null)
+    {
+        if (!count($customField) || empty($customField['id'])) {
+            throw new \InvalidArgumentException(
+                'Parameter `customField` must contains a data & customField `id` must be set'
+            );
+        }
+
+        return $this->client->makeRequest(
+            sprintf('/custom-fields/%s/edit', $customField['id']),
+            Client::METHOD_POST,
+            $this->fillSite($site, array('customField' => json_encode($customField)))
+        );
+    }
+
+    /**
      * Returns filtered custom-fields/dictionaries list
      *
      * @param array $filter (default: array())
@@ -237,6 +280,117 @@ class ApiClient
 
         return $this->client->makeRequest(
             '/custom-fields/dictionaries',
+            Client::METHOD_GET,
+            $parameters
+        );
+    }
+
+    /**
+     * Create a customDictionary
+     *
+     * @param array  $customDictionaries customDictionary data
+     * @param string $site  (default: null)
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RetailCrm\Exception\CurlException
+     * @throws \RetailCrm\Exception\InvalidJsonException
+     *
+     * @return ApiResponse
+     */
+    public function customDictionariesCreate(array $customDictionary, $site = null)
+    {
+        if (!count($customDictionary)) {
+            throw new \InvalidArgumentException(
+                'Parameter `customDictionary` must contains a data'
+            );
+        }
+
+        return $this->client->makeRequest(
+            '/custom-fields/dictionaries/create',
+            Client::METHOD_POST,
+            $this->fillSite($site, array('customDictionary' => json_encode($customDictionary)))
+        );
+    }
+
+    /**
+     * Get customDictionary assembly by id
+     *
+     * @param string $id customDictionary identificator
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RetailCrm\Exception\CurlException
+     * @throws \RetailCrm\Exception\InvalidJsonException
+     *
+     * @return ApiResponse
+     */
+    public function customDictionariesGet($id)
+    {
+        if (empty($id)) {
+            throw new \InvalidArgumentException('Parameter `id` must be set');
+        }
+
+        return $this->client->makeRequest(
+            "/custom-fields/dictionaries/$id",
+            Client::METHOD_GET
+        );
+    }
+
+    /**
+     * Edit customDictionary assembly
+     *
+     * @param array  $customDictionary customDictionary data
+     * @param string $site (default: null)
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RetailCrm\Exception\CurlException
+     * @throws \RetailCrm\Exception\InvalidJsonException
+     *
+     * @return ApiResponse
+     */
+    public function customDictionariesEdit(array $customDictionary, $site = null)
+    {
+        if (!count($customDictionary) || empty($customDictionary['id'])) {
+            throw new \InvalidArgumentException(
+                'Parameter `customDictionary` must contains a data & customDictionary `id` must be set'
+            );
+        }
+
+        return $this->client->makeRequest(
+            sprintf('/custom-fields/dictionaries/%s/edit', $customDictionary['id']),
+            Client::METHOD_POST,
+            $this->fillSite($site, array('customDictionary' => json_encode($customDictionary)))
+        );
+    }
+
+    /**
+     * Returns filtered orders list
+     *
+     * @param array $filter (default: array())
+     * @param int   $page   (default: null)
+     * @param int   $limit  (default: null)
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RetailCrm\Exception\CurlException
+     * @throws \RetailCrm\Exception\InvalidJsonException
+     *
+     * @return ApiResponse
+     */
+    public function ordersList(array $filter = array(), $page = null, $limit = null)
+    {
+        $parameters = array();
+
+        if (count($filter)) {
+            $parameters['filter'] = $filter;
+        }
+        if (null !== $page) {
+            $parameters['page'] = (int) $page;
+        }
+        if (null !== $limit) {
+            $parameters['limit'] = (int) $limit;
+        }
+
+        return $this->client->makeRequest(
+            '/orders',
             Client::METHOD_GET,
             $parameters
         );
